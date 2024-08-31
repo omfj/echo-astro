@@ -24,5 +24,10 @@ export const GET: APIRoute = async (c) => {
     maxAge: 60 * 10,
   });
 
-  return Response.redirect(url);
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: url.toString(),
+    },
+  });
 };
