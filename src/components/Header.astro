@@ -1,0 +1,36 @@
+---
+const { user } = Astro.locals;
+---
+
+<nav>
+  <a href="/">Hjem</a>
+
+  {user && <a href="/profil">Profil</a>}
+
+  {
+    user && (
+      <a id="sign-out" href="/auth/sign-out">
+        Logg ut, {user.name}
+      </a>
+    )
+  }
+
+  {
+    !user && (
+      <a id="sign-in" href="/auth/feide">
+        Logg inn
+      </a>
+    )
+  }
+</nav>
+
+<script>
+  const currentUrl = new URL(window.location.href);
+  const redirectTo = currentUrl.pathname + currentUrl.search + currentUrl.hash;
+
+  const $signIn = document.getElementById("sign-in");
+  const $signOut = document.getElementById("sign-out");
+
+  $signIn?.setAttribute("href", `/auth/feide?redirectTo=${redirectTo}`);
+  $signOut?.setAttribute("href", `/auth/sign-out?redirectTo=${redirectTo}`);
+</script>

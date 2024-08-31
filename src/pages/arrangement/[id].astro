@@ -1,0 +1,29 @@
+---
+import { marked } from "marked";
+import { getHappening } from "../../api/sanity/happenings";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import RegisterButton from "../../components/RegisterButton.astro";
+
+const { id } = Astro.params;
+
+if (!id) {
+  return Astro.redirect("/404");
+}
+
+const happening = await getHappening(id);
+
+if (!happening) {
+  return Astro.redirect("/404");
+}
+
+const { title, body } = happening;
+const content = marked.parse(body ?? "");
+---
+
+<BaseLayout>
+  <h1>{title}</h1>
+
+  <RegisterButton />
+
+  <article set:html={content} />
+</BaseLayout>

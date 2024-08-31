@@ -1,0 +1,49 @@
+---
+import { isRegistered, register, unregister } from "../api/registrations";
+
+const { user } = Astro.locals;
+const { id } = Astro.params;
+
+if (!id) {
+  throw new Error("Missing id");
+}
+
+if (Astro.request.method === "POST") {
+  if (!user) {
+    return;
+  }
+
+  const formData = await Astro.request.formData();
+  const action = formData.get("action");
+
+  if (action === "register") {
+    await register(id, user.id);
+  } else {
+    await unregister(id, user.id);
+  }
+}
+
+const isUserRegistered = user && (await isRegistered(id, user.id));
+---
+
+{
+  user && isUserRegistered && (
+    <form method="post">
+      <button name="action" value="unregister">
+        Meld av
+      </button>
+    </form>
+  )
+}
+
+{
+  user && !isUserRegistered && (
+    <form method="post">
+      <button name="action" value="register">
+        Meld på
+      </button>
+    </form>
+  )
+}
+
+{!user && <p>Du må være logget inn for å melde deg på arrangementet</p>}

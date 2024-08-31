@@ -7,12 +7,21 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "format": "prettier --write .",
+    "format:certify": "prettier --check ."
   },
   "dependencies": {
-    "astro": "^4.15.1",
-    "@astrojs/check": "^0.9.3",
-    "typescript": "^5.5.4"
+    "@astrojs/check": "0.9.3",
+    "@astrojs/node": "^8.3.3",
+    "@sanity/client": "^6.21.3",
+    "astro": "4.15.1",
+    "marked": "^14.1.0",
+    "typescript": "5.5.4"
   },
-  "packageManager": "pnpm@8.7.0+sha512.1d61f8c10e8a5a5dbfbddea0f1f5efb7dbd5177223073aec953cf230aa46416884b9427a6421dba78f28ad0f93fbede38ba57083237b350243de6b1e3a8ce71d"
+  "packageManager": "pnpm@8.7.0",
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "prettier-plugin-astro": "^0.14.1"
+  }
 }

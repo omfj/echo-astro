@@ -1,16 +1,66 @@
 ---
+import { getHappenings } from "../api/sanity/happenings";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
+const [happenings] = await Promise.all([
+  getHappenings("bedpres"),
+  getHappenings("event"),
+]);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <h1>echo - Linjeforeningen for informatikk</h1>
+  <p>
+    Vi i echo jobber med å gjøre studiehverdagen for informatikkstudenter bedre
+    ved å arrangere sosiale og faglige arrangementer.
+  </p>
+
+  <section>
+    <h2>Hva er echo?</h2>
+    <p>
+      echo består av frivillige informatikkstudenter, og er delt inn i et
+      hovedstyre og en rekke undergrupper, komiteer og interesseorganisasjoner.
+      Hovedstyret vårt består av fem demokratisk valgte studenter og syv
+      representanter fra undergruppere. Vi er linjeforeningen for informatikk
+      ved Universitetet i Bergen, men har også et overordnet ansvar for
+      studentsaker som angår det faglige ved instituttet.
+    </p>
+  </section>
+
+  <section>
+    <h2>For bedrifter</h2>
+    <p>
+      Vi tilbyr også muligheten for bedrifter til å presentere seg for
+      informatikkstudentene ved Universitetet i Bergen. Dette kan gjøres gjennom
+      bedriftspresentasjoner, workshops, kurs og andre arrangementer. Vi tilbyr
+      også muligheten for bedrifter å annonsere ledige stillinger og internship
+      på nettsiden vår.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kommende bedriftspresentasjoner</h2>
+    <ul>
+      {
+        happenings.slice(0, 5).map((happening) => (
+          <li>
+            <a href={`/arrangement/${happening._id}`}>{happening.title}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section>
+    <h2>Kommende arrangementer</h2>
+    <ul>
+      {
+        happenings.slice(0, 5).map((happening) => (
+          <li>
+            <a href={`/arrangement/${happening._id}`}>{happening.title}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
