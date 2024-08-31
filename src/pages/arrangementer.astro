@@ -1,0 +1,35 @@
+---
+import { getHappenings } from "../data/sanity/happenings";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const happenings = await getHappenings();
+
+const bedpres = happenings.filter((h) => h.type === "bedpres");
+const events = happenings.filter((h) => h.type === "event");
+---
+
+<BaseLayout>
+  <h1>Arrangementer</h1>
+
+  <ul>
+    {
+      events.map((happening) => (
+        <li>
+          <a href={`/arrangement/${happening._id}`}>{happening.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h1>Bedriftspresentasjoner</h1>
+
+  <ul>
+    {
+      bedpres.map((happening) => (
+        <li>
+          <a href={`/arrangement/${happening._id}`}>{happening.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

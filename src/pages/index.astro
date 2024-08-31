@@ -1,10 +1,10 @@
 ---
-import { getHappenings } from "../api/sanity/happenings";
+import { getHappenings } from "../data/sanity/happenings";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const [happenings, bedpres] = await Promise.all([
-  getHappenings("event"),
-  getHappenings("bedpres"),
+  getHappenings(["event"]),
+  getHappenings(["bedpres"]),
 ]);
 ---
 

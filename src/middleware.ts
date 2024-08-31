@@ -1,15 +1,34 @@
 import { defineMiddleware } from "astro:middleware";
-import { AUTH_COOKIE } from "./auth/cookie";
-import { getUser } from "./api/users";
+import { lucia } from "./auth/lucia";
 
-export const onRequest = defineMiddleware(async (c, next) => {
-  const sessionId = c.cookies.get(AUTH_COOKIE)?.value;
+export const onRequest = defineMiddleware(async (context, next) => {
+  const sessionId = context.cookies.get(lucia.sessionCookieName)?.value ?? null;
   if (!sessionId) {
-    c.locals.user = null;
+    context.locals.user = null;
+    context.locals.session = null;
     return next();
   }
 
-  const user = await getUser(sessionId);
-  c.locals.user = user;
+  const { session, user } = await lucia.validateSession(sessionId);
+  if (session && session.fresh) {
+    const sessionCookie = lucia.createSessionCookie(session.id);
+    context.cookies.set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes,
+    );
+  }
+
+  if (!session) {
+    const sessionCookie = lucia.createBlankSessionCookie();
+    context.cookies.set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes,
+    );
+  }
+
+  context.locals.session = session;
+  context.locals.user = user;
   return next();
 });

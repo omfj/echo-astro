@@ -1,11 +1,15 @@
 ---
-import { isRegistered, register, unregister } from "../api/registrations";
-import { getSpotRanges } from "../api/sanity/spot-ranges";
+import {
+  isUserRegistered,
+  register,
+  unregister,
+} from "../data/db/registrations";
+import { getSpotRanges } from "../data/sanity/spot-ranges";
 
 const { user } = Astro.locals;
-const { id } = Astro.params;
+const { id: happeningId } = Astro.params;
 
-if (!id) {
+if (!happeningId) {
   throw new Error("Missing id");
 }
 
@@ -18,19 +22,19 @@ if (Astro.request.method === "POST") {
   const action = formData.get("action");
 
   if (action === "register") {
-    await register(id, user.id);
+    await register(happeningId, user.id);
   } else {
-    await unregister(id, user.id);
+    await unregister(happeningId, user.id);
   }
 }
 
-const spotRanges = await getSpotRanges(id);
+const spotRanges = await getSpotRanges(happeningId);
 const hasSpotRanges = spotRanges && spotRanges.maxSpots > 0;
-const isUserRegistered = user && (await isRegistered(id, user.id));
+const isRegistered = user && (await isUserRegistered(happeningId, user.id));
 ---
 
 {
-  user && isUserRegistered && (
+  user && isRegistered && (
     <form method="post">
       <button name="action" value="unregister">
         Meld av
@@ -40,7 +44,7 @@ const isUserRegistered = user && (await isRegistered(id, user.id));
 }
 
 {
-  hasSpotRanges && user && !isUserRegistered && (
+  hasSpotRanges && user && !isRegistered && (
     <form method="post">
       <button name="action" value="register">
         Meld på

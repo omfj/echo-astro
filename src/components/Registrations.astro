@@ -1,6 +1,6 @@
 ---
-import { registerKv } from "../api/registrations";
-import { getSpotRanges } from "../api/sanity/spot-ranges";
+import { getRegistrations } from "../data/db/registrations";
+import { getSpotRanges } from "../data/sanity/spot-ranges";
 
 const { id } = Astro.params;
 
@@ -9,13 +9,17 @@ if (!id) {
 }
 
 const spotRanges = await getSpotRanges(id);
-const registrations = await registerKv.get(id).then((r) => r?.length ?? 0);
+const registrations = await getRegistrations(id);
+
+const registered = registrations.filter(
+  (r) => r.status === "registered"
+).length;
 ---
 
 {
   spotRanges && spotRanges.maxSpots > 0 && (
     <p>
-      {registrations} / {spotRanges.maxSpots} plasseringer registrert
+      {registered} / {spotRanges.maxSpots} plasseringer registrert
     </p>
   )
 }

@@ -1,5 +1,4 @@
 ---
-import { usersKv } from "../api/users";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 let user = Astro.locals.user;
@@ -8,28 +7,17 @@ if (!user) {
   return Astro.redirect("/404");
 }
 
-if (Astro.request.method === "POST") {
-  const formData = await Astro.request.formData();
-  const name = formData.get("name") as string;
-  const email = formData.get("email") as string;
-
-  await usersKv.set(user.id, { id: user.id, name, email });
-  user = { ...user, name, email };
-}
-
-const { name, email } = user;
+const { name, email, alternative_email, year, degree_id } = user;
 ---
 
 <BaseLayout>
   <h1>Profil for {name}</h1>
 
-  <form method="post">
-    <label for="name">Navn</label>
-    <input type="text" name="name" value={name} />
-
-    <label for="email">E-post</label>
-    <input type="email" name="email" value={email} />
-
-    <button type="submit">Lagre</button>
-  </form>
+  <p><strong>E-post:</strong> {email}</p>
+  <p>
+    <strong>Alternativ E-post:</strong>
+    {alternative_email ?? "Ikke oppgitt"}
+  </p>
+  <p><strong>År:</strong> {year ?? "Ikke oppgitt"}</p>
+  <p><strong>Studieretning:</strong> {degree_id ?? "Ikke oppgitt"}</p>
 </BaseLayout>
