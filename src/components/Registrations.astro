@@ -1,0 +1,21 @@
+---
+import { registerKv } from "../api/registrations";
+import { getSpotRanges } from "../api/sanity/spot-ranges";
+
+const { id } = Astro.params;
+
+if (!id) {
+  throw new Error("Missing id");
+}
+
+const spotRanges = await getSpotRanges(id);
+const registrations = await registerKv.get(id).then((r) => r?.length ?? 0);
+---
+
+{
+  spotRanges && spotRanges.maxSpots > 0 && (
+    <p>
+      {registrations} / {spotRanges.maxSpots} plasseringer registrert
+    </p>
+  )
+}

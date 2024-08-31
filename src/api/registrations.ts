@@ -1,6 +1,6 @@
 import { Kv } from "./kv";
 
-const registerKv = new Kv<Array<string>>("registrations.json");
+export const registerKv = new Kv<Array<string>>("registrations.json");
 
 export const isRegistered = async (happeningId: string, userId: string) => {
   if (!(await registerKv.has(happeningId))) {

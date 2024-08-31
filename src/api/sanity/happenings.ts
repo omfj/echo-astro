@@ -1,4 +1,5 @@
-import { client, type SanityResult } from "./client";
+import { type SanityResult } from "./client";
+import { sanityClient } from "sanity:client";
 
 const getHappeningsQuery = `*[_type == "happening"
     && !(_id in path("drafts.**"))
@@ -10,7 +11,7 @@ const getHappeningsQuery = `*[_type == "happening"
 }`;
 
 export const getHappenings = async (type?: "bedpres" | "event") => {
-  const result = await client.fetch<
+  const result = await sanityClient.fetch<
     SanityResult<
       Array<{
         _id: string;
@@ -34,7 +35,7 @@ const getHappeningQuery = `*[_type == "happening" &&
 }`;
 
 export const getHappening = async (id: string) => {
-  const result = await client.fetch<
+  const result = await sanityClient.fetch<
     SanityResult<{
       _id: string;
       title: string;

@@ -3,6 +3,7 @@ import { marked } from "marked";
 import { getHappening } from "../../api/sanity/happenings";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import RegisterButton from "../../components/RegisterButton.astro";
+import Registrations from "../../components/Registrations.astro";
 
 const { id } = Astro.params;
 
@@ -23,6 +24,7 @@ const content = marked.parse(body ?? "");
 <BaseLayout>
   <h1>{title}</h1>
 
+  <Registrations />
   <RegisterButton />
 
   <article set:html={content} />

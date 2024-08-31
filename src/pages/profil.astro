@@ -2,7 +2,7 @@
 import { usersKv } from "../api/users";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const { user } = Astro.locals;
+let user = Astro.locals.user;
 
 if (!user) {
   return Astro.redirect("/404");
@@ -14,6 +14,7 @@ if (Astro.request.method === "POST") {
   const email = formData.get("email") as string;
 
   await usersKv.set(user.id, { id: user.id, name, email });
+  user = { ...user, name, email };
 }
 
 const { name, email } = user;

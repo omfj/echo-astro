@@ -2,9 +2,9 @@
 import { getHappenings } from "../api/sanity/happenings";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const [happenings] = await Promise.all([
-  getHappenings("bedpres"),
+const [happenings, bedpres] = await Promise.all([
   getHappenings("event"),
+  getHappenings("bedpres"),
 ]);
 ---
 
@@ -42,7 +42,7 @@ const [happenings] = await Promise.all([
     <h2>Kommende bedriftspresentasjoner</h2>
     <ul>
       {
-        happenings.slice(0, 5).map((happening) => (
+        bedpres.slice(0, 5).map((happening) => (
           <li>
             <a href={`/arrangement/${happening._id}`}>{happening.title}</a>
           </li>
