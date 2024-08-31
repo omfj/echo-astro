@@ -7,7 +7,7 @@ if (!user) {
   return Astro.redirect("/404");
 }
 
-const { name, email, alternative_email, year, degree_id } = user;
+const { name, email, alternativeEmail, year, degreeId } = user;
 ---
 
 <BaseLayout>
@@ -16,8 +16,8 @@ const { name, email, alternative_email, year, degree_id } = user;
   <p><strong>E-post:</strong> {email}</p>
   <p>
     <strong>Alternativ E-post:</strong>
-    {alternative_email ?? "Ikke oppgitt"}
+    {alternativeEmail ?? "Ikke oppgitt"}
   </p>
   <p><strong>År:</strong> {year ?? "Ikke oppgitt"}</p>
-  <p><strong>Studieretning:</strong> {degree_id ?? "Ikke oppgitt"}</p>
+  <p><strong>Studieretning:</strong> {degreeId ?? "Ikke oppgitt"}</p>
 </BaseLayout>

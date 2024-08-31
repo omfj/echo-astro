@@ -23,11 +23,11 @@ export const GET: APIRoute = async (c) => {
     .selectFrom("account")
     .selectAll()
     .where("provider", "=", "feide")
-    .where("provider_account_id", "=", feideUser.id)
+    .where("providerAccountId", "=", feideUser.id)
     .executeTakeFirst();
 
   if (existingUser) {
-    const session = await lucia.createSession(existingUser.user_id, {});
+    const session = await lucia.createSession(existingUser.userId, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
 
     c.cookies.set(
@@ -60,8 +60,8 @@ export const GET: APIRoute = async (c) => {
       .insertInto("account")
       .values({
         provider: "feide",
-        provider_account_id: feideUser.id,
-        user_id: userId,
+        providerAccountId: feideUser.id,
+        userId: userId,
         type: "oauth",
       })
       .execute();

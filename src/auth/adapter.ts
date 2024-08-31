@@ -14,10 +14,10 @@ export class LuciaDatabaseAdapter implements Adapter {
   ): Promise<[session: DatabaseSession | null, user: DatabaseUser | null]> {
     const result = await this.#db
       .selectFrom("session")
-      .innerJoin("user", "session.user_id", "user.id")
+      .innerJoin("user", "session.userId", "user.id")
       .selectAll("session")
       .selectAll("user")
-      .where("session.session_token", "=", sessionId)
+      .where("session.sessionToken", "=", sessionId)
       .executeTakeFirst();
 
     if (!result) {
@@ -25,14 +25,14 @@ export class LuciaDatabaseAdapter implements Adapter {
     }
 
     const session = {
-      id: result.session_token,
-      userId: result.user_id,
+      id: result.sessionToken,
+      userId: result.userId,
       expiresAt: result.expires,
       attributes: {},
     };
 
     const user = {
-      id: result.user_id,
+      id: result.userId,
       attributes: {
         ...result,
       },
@@ -44,13 +44,13 @@ export class LuciaDatabaseAdapter implements Adapter {
   async getUserSessions(userId: string): Promise<Array<DatabaseSession>> {
     return await this.#db
       .selectFrom("session")
-      .where("user_id", "=", userId)
+      .where("userId", "=", userId)
       .selectAll()
       .execute()
       .then((rows) =>
         rows.map((row) => ({
-          id: row.session_token,
-          userId: row.user_id,
+          id: row.sessionToken,
+          userId: row.userId,
           expiresAt: row.expires,
           attributes: {},
         })),
@@ -62,8 +62,8 @@ export class LuciaDatabaseAdapter implements Adapter {
       .insertInto("session")
       .values({
         expires: session.expiresAt,
-        session_token: session.id,
-        user_id: session.userId,
+        sessionToken: session.id,
+        userId: session.userId,
       })
       .execute();
   }
@@ -75,22 +75,19 @@ export class LuciaDatabaseAdapter implements Adapter {
     await this.#db
       .updateTable("session")
       .set({ expires: expiresAt })
-      .where("session_token", "=", sessionId)
+      .where("sessionToken", "=", sessionId)
       .execute();
   }
 
   async deleteSession(sessionId: string): Promise<void> {
     await this.#db
       .deleteFrom("session")
-      .where("session_token", "=", sessionId)
+      .where("sessionToken", "=", sessionId)
       .execute();
   }
 
   async deleteUserSessions(userId: string): Promise<void> {
-    await this.#db
-      .deleteFrom("session")
-      .where("user_id", "=", userId)
-      .execute();
+    await this.#db.deleteFrom("session").where("userId", "=", userId).execute();
   }
 
   async deleteExpiredSessions(): Promise<void> {

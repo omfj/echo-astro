@@ -36,41 +36,41 @@ export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 export type UserType = "alum" | "company" | "guest" | "student";
 
 export interface AccessRequest {
-  created_at: Generated<Timestamp>;
+  createdAt: Generated<Timestamp>;
   email: string;
   id: string;
   reason: string;
 }
 
 export interface Account {
-  access_token: string | null;
-  expires_at: number | null;
-  id_token: string | null;
+  accessToken: string | null;
+  expiresAt: number | null;
+  idToken: string | null;
   provider: string;
-  provider_account_id: string;
-  refresh_token: string | null;
+  providerAccountId: string;
+  refreshToken: string | null;
   scope: string | null;
-  session_state: string | null;
-  token_type: string | null;
+  sessionState: string | null;
+  tokenType: string | null;
   type: string;
-  user_id: string;
+  userId: string;
 }
 
 export interface Answer {
   answer: Json | null;
-  happening_id: string;
-  question_id: string;
-  user_id: string;
+  happeningId: string;
+  questionId: string;
+  userId: string;
 }
 
 export interface Comment {
   content: string;
-  created_at: Generated<Timestamp>;
+  createdAt: Generated<Timestamp>;
   id: string;
-  parent_comment_id: string | null;
-  post_id: string;
-  updated_at: Timestamp;
-  user_id: string | null;
+  parentCommentId: string | null;
+  postId: string;
+  updatedAt: Timestamp;
+  userId: string | null;
 }
 
 export interface Degree {
@@ -79,7 +79,7 @@ export interface Degree {
 }
 
 export interface DrizzleDrizzleMigrations {
-  created_at: Int8 | null;
+  createdAt: Int8 | null;
   hash: string;
   id: Generated<number>;
 }
@@ -92,18 +92,18 @@ export interface Group {
 export interface Happening {
   date: Timestamp | null;
   id: string;
-  registration_end: Timestamp | null;
-  registration_groups: Json | null;
-  registration_start: Timestamp | null;
-  registration_start_groups: Timestamp | null;
+  registrationEnd: Timestamp | null;
+  registrationGroups: Json | null;
+  registrationStart: Timestamp | null;
+  registrationStartGroups: Timestamp | null;
   slug: string;
   title: string;
   type: Generated<HappeningType>;
 }
 
 export interface HappeningsToGroups {
-  group_id: string;
-  happening_id: string;
+  groupId: string;
+  happeningId: string;
 }
 
 export interface Kv {
@@ -113,9 +113,9 @@ export interface Kv {
 }
 
 export interface Question {
-  happening_id: string;
+  happeningId: string;
   id: string;
-  is_sensitive: Generated<boolean>;
+  isSensitive: Generated<boolean>;
   options: Json | null;
   required: Generated<boolean>;
   title: string;
@@ -123,97 +123,97 @@ export interface Question {
 }
 
 export interface Reaction {
-  created_at: Generated<Timestamp>;
-  emoji_id: number;
-  react_to_key: string;
-  user_id: string;
+  createdAt: Generated<Timestamp>;
+  emojiId: number;
+  reactToKey: string;
+  userId: string;
 }
 
 export interface Registration {
-  changed_at: Timestamp | null;
-  changed_by: string | null;
-  created_at: Generated<Timestamp>;
-  happening_id: string;
-  prev_status: RegistrationStatus | null;
+  changedAt: Timestamp | null;
+  changedBy: string | null;
+  createdAt: Generated<Timestamp>;
+  happeningId: string;
+  prevStatus: RegistrationStatus | null;
   status: Generated<RegistrationStatus>;
-  unregister_reason: string | null;
-  user_id: string;
+  unregisterReason: string | null;
+  userId: string;
 }
 
 export interface Session {
   expires: Timestamp;
-  session_token: string;
-  user_id: string;
+  sessionToken: string;
+  userId: string;
 }
 
 export interface ShoppingListItem {
-  created_at: Generated<Timestamp>;
+  createdAt: Generated<Timestamp>;
   id: Generated<string>;
   name: string;
-  user_id: string;
+  userId: string;
 }
 
 export interface SiteFeedback {
   category: FeedbackCategory;
-  created_at: Generated<Timestamp>;
+  createdAt: Generated<Timestamp>;
   email: string | null;
   id: string;
-  is_read: Generated<boolean>;
+  isRead: Generated<boolean>;
   message: string;
   name: string | null;
 }
 
 export interface SpotRange {
-  happening_id: string;
+  happeningId: string;
   id: string;
-  max_year: number;
-  min_year: number;
+  maxYear: number;
+  minYear: number;
   spots: number;
 }
 
 export interface Strike {
   id: Generated<number>;
-  is_deleted: Generated<boolean>;
-  strike_info_id: string;
-  user_id: string;
+  isDeleted: Generated<boolean>;
+  strikeInfoId: string;
+  userId: string;
 }
 
 export interface StrikeInfo {
-  created_at: Generated<Timestamp>;
-  happening_id: string;
+  createdAt: Generated<Timestamp>;
+  happeningId: string;
   id: Generated<string>;
-  issuer_id: string;
+  issuerId: string;
   reason: string;
 }
 
 export interface User {
-  alternative_email: string | null;
-  banned_from_strike: number | null;
-  created_at: Timestamp | null;
-  degree_id: string | null;
+  alternativeEmail: string | null;
+  bannedFromStrike: number | null;
+  createdAt: Timestamp | null;
+  degreeId: string | null;
   email: string;
-  email_verified: Timestamp | null;
-  has_read_terms: Generated<boolean>;
+  emailVerified: Timestamp | null;
+  hasReadTerms: Generated<boolean>;
   id: string;
   image: string | null;
-  is_banned: Generated<boolean>;
-  last_sign_in_at: Timestamp | null;
+  isBanned: Generated<boolean>;
+  lastSignInAt: Timestamp | null;
   name: string | null;
   type: Generated<UserType>;
-  updated_at: Timestamp | null;
+  updatedAt: Timestamp | null;
   year: number | null;
 }
 
 export interface UsersToGroups {
-  group_id: string;
-  is_leader: Generated<boolean>;
-  user_id: string;
+  groupId: string;
+  isLeader: Generated<boolean>;
+  userId: string;
 }
 
 export interface UsersToShoppingListItems {
-  created_at: Generated<Timestamp>;
-  item_id: string;
-  user_id: string;
+  createdAt: Generated<Timestamp>;
+  itemId: string;
+  userId: string;
 }
 
 export interface VerificationToken {
@@ -224,33 +224,33 @@ export interface VerificationToken {
 
 export interface Whitelist {
   email: string;
-  expires_at: Timestamp;
+  expiresAt: Timestamp;
   reason: string;
 }
 
 export interface DB {
-  access_request: AccessRequest;
+  accessRequest: AccessRequest;
   account: Account;
   answer: Answer;
   comment: Comment;
   degree: Degree;
-  "drizzle.__drizzle_migrations": DrizzleDrizzleMigrations;
+  "drizzle.DrizzleMigrations": DrizzleDrizzleMigrations;
   group: Group;
   happening: Happening;
-  happenings_to_groups: HappeningsToGroups;
+  happeningsToGroups: HappeningsToGroups;
   kv: Kv;
   question: Question;
   reaction: Reaction;
   registration: Registration;
   session: Session;
-  shopping_list_item: ShoppingListItem;
-  site_feedback: SiteFeedback;
-  spot_range: SpotRange;
+  shoppingListItem: ShoppingListItem;
+  siteFeedback: SiteFeedback;
+  spotRange: SpotRange;
   strike: Strike;
-  strike_info: StrikeInfo;
+  strikeInfo: StrikeInfo;
   user: User;
-  users_to_groups: UsersToGroups;
-  users_to_shopping_list_items: UsersToShoppingListItems;
-  verification_token: VerificationToken;
+  usersToGroups: UsersToGroups;
+  usersToShoppingListItems: UsersToShoppingListItems;
+  verificationToken: VerificationToken;
   whitelist: Whitelist;
 }
