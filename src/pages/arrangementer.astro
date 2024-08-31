@@ -2,10 +2,40 @@
 import { getHappenings } from "../data/sanity/happenings";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const happenings = await getHappenings();
+const includePastEvents =
+  Astro.url.searchParams.get("includePastEvents") === "true";
 
-const bedpres = happenings.filter((h) => h.type === "bedpres");
-const events = happenings.filter((h) => h.type === "event");
+const includePastBedpres =
+  Astro.url.searchParams.get("includePastBedpres") === "true";
+
+const [bedpres, events] = await Promise.all([
+  getHappenings({ types: ["bedpres"], includePast: includePastBedpres }),
+  getHappenings({ types: ["event"], includePast: includePastEvents }),
+]);
+
+const includePastEventsUrl = () => {
+  const searchParams = new URLSearchParams(Astro.url.searchParams);
+  searchParams.append("includePastEvents", "true");
+  return Astro.url.pathname + Astro.url.hash + "?" + searchParams.toString();
+};
+
+const removePastEventsUrl = () => {
+  const searchParams = new URLSearchParams(Astro.url.searchParams);
+  searchParams.delete("includePastEvents");
+  return Astro.url.pathname + Astro.url.hash + "?" + searchParams.toString();
+};
+
+const includePastBedpresUrl = () => {
+  const searchParams = new URLSearchParams(Astro.url.searchParams);
+  searchParams.append("includePastBedpres", "true");
+  return Astro.url.pathname + Astro.url.hash + "?" + searchParams.toString();
+};
+
+const removePastBedpresUrl = () => {
+  const searchParams = new URLSearchParams(Astro.url.searchParams);
+  searchParams.delete("includePastBedpres");
+  return Astro.url.pathname + Astro.url.hash + "?" + searchParams.toString();
+};
 ---
 
 <BaseLayout>
@@ -21,6 +51,18 @@ const events = happenings.filter((h) => h.type === "event");
     }
   </ul>
 
+  {
+    includePastEvents ? (
+      <p>
+        <a href={removePastEventsUrl()}>{">>"} Skjul tidligere arrangementer</a>
+      </p>
+    ) : (
+      <p>
+        <a href={includePastEventsUrl()}>{">>"} Vis tidligere arrangementer</a>
+      </p>
+    )
+  }
+
   <h1>Bedriftspresentasjoner</h1>
 
   <ul>
@@ -32,4 +74,20 @@ const events = happenings.filter((h) => h.type === "event");
       ))
     }
   </ul>
+
+  {
+    includePastBedpres ? (
+      <p>
+        <a href={removePastBedpresUrl()}>
+          {">>"} Skjul tidligere bedriftspresentasjoner
+        </a>
+      </p>
+    ) : (
+      <p>
+        <a href={includePastBedpresUrl()}>
+          {">>"} Vis tidligere bedriftspresentasjoner
+        </a>
+      </p>
+    )
+  }
 </BaseLayout>

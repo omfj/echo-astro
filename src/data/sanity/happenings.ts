@@ -4,9 +4,11 @@ import { sanityClient } from "sanity:client";
 export const happeningTypes = ["bedpres", "event", "external"] as const;
 export type HappeningType = (typeof happeningTypes)[number];
 
-const getHappeningsQuery = `*[_type == "happening"
+const getHappeningsQuery = (
+  opts?: GetHappeningsOptions,
+) => `*[_type == "happening"
     && !(_id in path("drafts.**"))
-    && now() < registrationEnd
+    ${opts?.includePast ? "" : "&& now() < registrationEnd"}
     && happeningType in $types
 ] | order(registrationStart asc) {
     _id,
@@ -14,9 +16,12 @@ const getHappeningsQuery = `*[_type == "happening"
     "type": happeningType
 }`;
 
-export const getHappenings = async (
-  types?: Array<"bedpres" | "event" | "external">,
-) => {
+type GetHappeningsOptions = {
+  types?: Array<"bedpres" | "event" | "external">;
+  includePast?: boolean;
+};
+
+export const getHappenings = async (opts?: GetHappeningsOptions) => {
   const result = await sanityClient.fetch<
     SanityResult<
       Array<{
@@ -25,8 +30,8 @@ export const getHappenings = async (
         type: HappeningType;
       }>
     >
-  >(getHappeningsQuery, {
-    types: types ? types : ["bedpres", "event", "external"],
+  >(getHappeningsQuery(opts), {
+    types: opts?.types ? opts.types : happeningTypes,
   });
 
   return result ?? [];
