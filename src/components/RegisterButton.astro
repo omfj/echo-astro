@@ -1,9 +1,5 @@
 ---
-import {
-  isUserRegistered,
-  register,
-  unregister,
-} from "../data/db/registrations";
+import { isUserRegistered } from "../data/db/registrations";
 import { getSpotRanges } from "../data/sanity/spot-ranges";
 
 const { user } = Astro.locals;
@@ -11,21 +7,6 @@ const { id: happeningId } = Astro.params;
 
 if (!happeningId) {
   throw new Error("Missing id");
-}
-
-if (Astro.request.method === "POST") {
-  if (!user) {
-    return;
-  }
-
-  const formData = await Astro.request.formData();
-  const action = formData.get("action");
-
-  if (action === "register") {
-    await register(happeningId, user.id);
-  } else {
-    await unregister(happeningId, user.id);
-  }
 }
 
 const spotRanges = await getSpotRanges(happeningId);
